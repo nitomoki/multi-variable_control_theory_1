@@ -30,7 +30,7 @@ omega0 = np.matrix([0., 0., 0.])
 
 dt = 0.01
 
-fig = plt.figure(figsize=(16,16))
+fig = plt.figure(figsize=(8,16))
 ax = fig.add_subplot(121, projection='3d')
 ax2 = fig.add_subplot(122, projection='3d')
 
