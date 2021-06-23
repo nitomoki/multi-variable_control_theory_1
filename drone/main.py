@@ -59,7 +59,6 @@ def update(frame, s):
     draw_com(s.p)
     draw_com_ref(s.p_d)
     draw_roters(s.p, s.R)
-    ic()
 
 def simulation(s):
     # reference trajectory
