@@ -17,6 +17,7 @@ from wrap_pi import *
 sns.set()
 
 playing = True
+animation = False
 #playing = False
 # parameters
 h = 1.0
@@ -52,13 +53,20 @@ Q = np.diag([1.0, 1.0, 1.0, 1.0])
 R = np.diag([100000.0, 100000.0])
 K, P, e = lqr(A, B, Q, R)
 
-ic(Q)
-ic(R)
-ic(K)
+result_com_x = []
+result_com_y = []
+result_com_z = []
+result_zmp_x = []
+result_zmp_y = []
+result_zmp_z = []
 
 
 fig = plt.figure(figsize=(8,8))
 ax = fig.add_subplot(111, projection='3d')
+
+if animation == False:
+    fig_result = plt.figure(figsize=(8,8))
+    ax_resurt = fig_result.add_subplot(111, projection='3d')
 
 # variables
 class State:
@@ -89,8 +97,17 @@ class State:
 
 def main():
     state = State()
-    if playing:
+    if animation:
         anim = animation.FuncAnimation(fig, update, fargs=(state,), frames=range(256), interval=100)
+        plt.show()
+
+    if not animation:
+        for frame in range(1000):
+            update(frame, state)
+            ic(frame)
+
+        ax_resurt.plot(result_com_x, result_com_y, result_com_z, ".", color='b')
+        ax_resurt.plot(result_zmp_x, result_zmp_y, result_zmp_z, ".", color='#ff7f00')
         plt.show()
 
 def update(frame, state):
@@ -104,7 +121,14 @@ def update(frame, state):
     draw_line(com, zmp)
     draw_foot_r(state.foot)
     draw_foot_l(state.foot)
-    #ic.disable()
+
+    if not animation:
+        result_com_x.append(com[0])
+        result_com_y.append(com[1])
+        result_com_z.append(com[2])
+        result_zmp_x.append(zmp[0])
+        result_zmp_y.append(zmp[1])
+        result_zmp_z.append(zmp[2])
 
 def simulation(state):
 
@@ -179,6 +203,14 @@ def ax_config():
     ax.set_ylim([-1.0, 1.0])
     ax.set_zlim([0.0, 1.5])
     #ax.view_init(-142.5, 30)
+    if not animation:
+        ax_resurt.set_title("Result", size=20)
+        ax_resurt.set_xlabel("x", size = 14)
+        ax_resurt.set_ylabel("y", size = 14)
+        ax_resurt.set_zlabel("z", size = 14)
+        ax_resurt.set_xlim([-0.2, 1.6])
+        ax_resurt.set_ylim([-1.0, 1.0])
+        ax_resurt.set_zlim([0.0, 1.5])
 
 def draw_com(com):
     ax.plot(com[0], com[1], com[2], "o")
