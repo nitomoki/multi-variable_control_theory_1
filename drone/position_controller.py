@@ -4,7 +4,7 @@ from icecream import ic
 
 from GLOBAL_VARIABLE import *
 
-K = np.matrix(np.diag([1.,1.,1.])) * 25.
+K = np.matrix(np.diag([1.,1.,1.])) * 30.
 C = np.matrix(np.diag([1.,1.,1.])) * 10.
 
 def position_controller(x, p_d):
