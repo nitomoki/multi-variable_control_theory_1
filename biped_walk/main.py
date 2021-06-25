@@ -17,7 +17,7 @@ from wrap_pi import *
 sns.set()
 
 playing = True
-animation = False
+animation_valid = True
 #playing = False
 # parameters
 h = 1.0
@@ -64,7 +64,7 @@ result_zmp_z = []
 fig = plt.figure(figsize=(8,8))
 ax = fig.add_subplot(111, projection='3d')
 
-if animation == False:
+if animation_valid == False:
     fig_result = plt.figure(figsize=(8,8))
     ax_resurt = fig_result.add_subplot(111, projection='3d')
 
@@ -97,11 +97,12 @@ class State:
 
 def main():
     state = State()
-    if animation:
-        anim = animation.FuncAnimation(fig, update, fargs=(state,), frames=range(256), interval=100)
-        plt.show()
+    if animation_valid:
+        anim = animation.FuncAnimation(fig, update, fargs=(state,), frames=range(300), interval=100)
+        anim.save("sample.gif", writer="pillow")
+        #plt.show()
 
-    if not animation:
+    if not animation_valid:
         for frame in range(1000):
             update(frame, state)
             ic(frame)
@@ -121,8 +122,9 @@ def update(frame, state):
     draw_line(com, zmp)
     draw_foot_r(state.foot)
     draw_foot_l(state.foot)
+    ic(frame)
 
-    if not animation:
+    if not animation_valid:
         result_com_x.append(com[0])
         result_com_y.append(com[1])
         result_com_z.append(com[2])
@@ -203,7 +205,7 @@ def ax_config():
     ax.set_ylim([-1.0, 1.0])
     ax.set_zlim([0.0, 1.5])
     #ax.view_init(-142.5, 30)
-    if not animation:
+    if not animation_valid:
         ax_resurt.set_title("Result", size=20)
         ax_resurt.set_xlabel("x", size = 14)
         ax_resurt.set_ylabel("y", size = 14)
